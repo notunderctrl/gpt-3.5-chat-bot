@@ -26,28 +26,32 @@ client.on('messageCreate', async (message) => {
 
   let conversationLog = [{ role: 'system', content: 'You are a friendly chatbot.' }];
 
-  await message.channel.sendTyping();
+  try {
+    await message.channel.sendTyping();
 
-  let prevMessages = await message.channel.messages.fetch({ limit: 15 });
-  prevMessages.reverse();
+    let prevMessages = await message.channel.messages.fetch({ limit: 15 });
+    prevMessages.reverse();
 
-  prevMessages.forEach((msg) => {
-    if (message.content.startsWith('!')) return;
-    if (msg.author.id !== client.user.id && message.author.bot) return;
-    if (msg.author.id !== message.author.id) return;
+    prevMessages.forEach((msg) => {
+      if (message.content.startsWith('!')) return;
+      if (msg.author.id !== client.user.id && message.author.bot) return;
+      if (msg.author.id !== message.author.id) return;
 
-    conversationLog.push({
-      role: 'user',
-      content: msg.content,
+      conversationLog.push({
+        role: 'user',
+        content: msg.content,
+      });
     });
-  });
 
-  const result = await openai.createChatCompletion({
-    model: 'gpt-3.5-turbo',
-    messages: conversationLog,
-  });
+    const result = await openai.createChatCompletion({
+      model: 'gpt-3.5-turbo',
+      messages: conversationLog,
+    });
 
-  message.reply(result.data.choices[0].message);
+    message.reply(result.data.choices[0].message);
+  } catch (error) {
+    console.log(`ERR: ${error}`);
+  }
 });
 
 client.login(process.env.TOKEN);
