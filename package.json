@@ -1,10 +1,11 @@
 {
-  "name": "gpt3.5",
+  "name": "gpt-3.5-chat-bot",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon index.js",
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
@@ -13,5 +14,8 @@
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
     "openai": "^3.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.21"
   }
 }
