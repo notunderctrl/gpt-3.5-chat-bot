@@ -35,20 +35,20 @@ client.on('messageCreate', async (message) => {
     prevMessages.forEach((msg) => {
       if (message.content.startsWith('!')) return;
       if (msg.author.id !== client.user.id && message.author.bot) return;
-      // if (msg.author.id !== message.author.id) return; Why i am commenting this out becuase this thing ignore all the message other than the author who triggered this thing . it also ignores the bot itself . 
+      
     
-      if (msg.author.id == client.user.id) {  // checks if the msg id send by the bot itself 
-
+      if (msg.author.id == client.user.id) {  
+       
         conversationLog.push(
         {
-          role: 'system',
+          role: 'assistant',
           content: msg.content,
           name: msg.author.username, 
         }
       );
 
-        } else if (msg.author.id == message.author.id) {  // checks if the msg is send by the message author who triggered this
-
+        } else if (msg.author.id == message.author.id) {  
+        
         conversationLog.push(
         {     
           role: 'user',
@@ -57,10 +57,10 @@ client.on('messageCreate', async (message) => {
         }
         );
        }    
-      // now the bot remembers the thing that the user said and also the things that the bot itself said      
-      return; // return nothing if the criteria of the chat for the message to be pushed is not correct     
+      
+      return; 
     });
-
+     
     const result = await openai
       .createChatCompletion({
         model: 'gpt-3.5-turbo',
@@ -70,7 +70,6 @@ client.on('messageCreate', async (message) => {
       .catch((error) => {
         console.log(`OPENAI ERR: ${error}`);
       });
-    
     message.reply(result.data.choices[0].message);
   } catch (error) {
     console.log(`ERR: ${error}`);
