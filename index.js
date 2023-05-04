@@ -39,30 +39,26 @@ client.on('messageCreate', async (message) => {
     
       if (msg.author.id == client.user.id) {  // checks if the msg id send by the bot itself 
 
-        conversationLog.push({
+        conversationLog.push(
+        {
           role: 'system',
           content: msg.content,
           name: msg.author.username, 
-        });
+        }
+      );
 
         } else if (msg.author.id == message.author.id) {  // checks if the msg is send by the message author who triggered this
 
-      
-
         conversationLog.push(
+        {     
           role: 'user',
           content: msg.content,
-          name: message.author.username,
-        });
-
-
-
-       }
-     
-      // now the bot remembers the thing that the user said and also the things that the bot itself said
-      
-      return; // return nothing if the criteria of the chat for the message to be pushed is not correct
-      
+          name: message.author.username,            
+        }
+        );
+       }    
+      // now the bot remembers the thing that the user said and also the things that the bot itself said      
+      return; // return nothing if the criteria of the chat for the message to be pushed is not correct     
     });
 
     const result = await openai
@@ -74,7 +70,7 @@ client.on('messageCreate', async (message) => {
       .catch((error) => {
         console.log(`OPENAI ERR: ${error}`);
       });
-
+    
     message.reply(result.data.choices[0].message);
   } catch (error) {
     console.log(`ERR: ${error}`);
