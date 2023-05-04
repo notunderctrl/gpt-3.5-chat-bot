@@ -35,28 +35,43 @@ client.on('messageCreate', async (message) => {
     prevMessages.forEach((msg) => {
       if (message.content.startsWith('!')) return;
       if (msg.author.id !== client.user.id && message.author.bot) return;
-      if (msg.author.id !== message.author.id) return;
 
-      conversationLog.push({
-        role: 'user',
-        content: msg.content,
-      });
-    });
+      if (msg.author.id == client.user.id) {
+        conversationLog.push(
+          {
+            role: 'system',
+            content: msg.content,
+            name: msg.author.username,
+          }
+        );
 
-    const result = await openai
-      .createChatCompletion({
-        model: 'gpt-3.5-turbo',
-        messages: conversationLog,
-        // max_tokens: 256, // limit token usage
-      })
-      .catch((error) => {
-        console.log(`OPENAI ERR: ${error}`);
-      });
+      } else if (msg.author.id == message.author.id) {
 
-    message.reply(result.data.choices[0].message);
-  } catch (error) {
-    console.log(`ERR: ${error}`);
-  }
-});
+        conversationLog.push(
+          {
+            role: 'user',
+            content: msg.content,
+            name: message.author.username,
+          }
+        );
+
+      }
+
+
+      const result = await openai
+        .createChatCompletion({
+          model: 'gpt-3.5-turbo',
+          messages: conversationLog,
+          // max_tokens: 256, // limit token usage
+        })
+        .catch((error) => {
+          console.log(`OPENAI ERR: ${error}`);
+        });
+
+      message.reply(result.data.choices[0].message);
+    } catch (error) {
+      console.log(`ERR: ${error}`);
+    }
+  });
 
 client.login(process.env.TOKEN);
