@@ -1,10 +1,10 @@
-const { WebhookClient, EmbedBuilder } = require('discord.js');
-
-let webhookClient;
+const { WebhookClient } = require('discord.js');
 
 const WEBHOOK_URL = process.env.LOGS_WEBHOOK_URL;
 
-WEBHOOK_URL && (webhookClient = new WebhookClient({ url: WEBHOOK_URL }));
+let webhookClient = new WebhookClient({ url: WEBHOOK_URL });
+
+console.log(webhookClient);
 
 module.exports = async (reason) => {
   try {
@@ -13,13 +13,7 @@ module.exports = async (reason) => {
       return;
     }
 
-    const embed = new EmbedBuilder({
-      title: 'Error log',
-      description: reason,
-      timestamp: Date.now(),
-    });
-
-    await webhookClient.send({ embeds: [embed] });
+    await webhookClient.send({ content: '```' + reason + '```' });
   } catch (error) {
     console.log(`logErrors.js: ${error}`);
   }
