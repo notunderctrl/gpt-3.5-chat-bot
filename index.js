@@ -54,7 +54,7 @@ client.on('messageCreate', async (message) => {
     }
 
     // If the message is from a regular user
-    else {
+    else if (msg.author.id === message.author.id) {
       conversationLog.push({
         role: 'user',
         content: msg.content,
