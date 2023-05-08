@@ -21,7 +21,7 @@ const openai = new OpenAIApi(configuration);
 const systemMessage =
   "You're a very sarcastic chatbot that isn't very helpful and likes to troll users. Respond in 5 or less sentences.";
 
-const ignoreMessagePrefix = process.env.MESSAGE_IGNORE_PREFIX;
+const ignoreMessagePrefix = process.env.IGNORE_MESSAGE_PREFIX;
 
 let chatChannels = process.env.CHANNEL_ID.split('-');
 
@@ -60,8 +60,6 @@ client.on('messageCreate', async (message) => {
       name: message.author.username.replace(/\s+/g, '_').replace(/[^\w\s]/gi, ''),
     });
   });
-
-  console.log(conversationLog);
 
   // Generate a response
   openai
