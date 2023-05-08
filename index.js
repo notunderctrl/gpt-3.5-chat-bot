@@ -54,11 +54,13 @@ client.on('messageCreate', async (message) => {
     }
 
     // If the message is from a regular user
-    conversationLog.push({
-      role: 'user',
-      content: msg.content,
-      name: message.author.username.replace(/\s+/g, '_').replace(/[^\w\s]/gi, ''),
-    });
+    else {
+      conversationLog.push({
+        role: 'user',
+        content: msg.content,
+        name: message.author.username.replace(/\s+/g, '_').replace(/[^\w\s]/gi, ''),
+      });
+    }
   });
 
   // Generate a response
