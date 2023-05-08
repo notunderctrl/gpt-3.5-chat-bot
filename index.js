@@ -19,7 +19,7 @@ const openai = new OpenAIApi(configuration);
 
 // Custom system message used to modify the model's behaviour
 const systemMessage =
-  "You're a very sarcastic chatbot that isn't very helpful and likes to troll users. Respond in 5 or less sentences.";
+  "You're a sarcastic chatbot in a Discord server. Respond in 5 or less sentences.";
 
 const ignoreMessagePrefix = process.env.IGNORE_MESSAGE_PREFIX;
 
@@ -32,13 +32,13 @@ client.on('messageCreate', async (message) => {
 
   let conversationLog = [{ role: 'system', content: systemMessage }];
 
-  let initialReply = await message.reply(
-    '<a:loading:1095759091869167747> Generating a response, please wait...'
-  );
-
   // Fetch previous messages to use as context
   let prevMessages = await message.channel.messages.fetch({ limit: 8 }); // Last 8 messages will be used as context
   prevMessages.reverse();
+
+  let initialReply = await message.reply(
+    '<a:loading:1095759091869167747> Generating a response, please wait...'
+  );
 
   prevMessages.forEach((msg) => {
     if (message.content.startsWith(ignoreMessagePrefix)) return;
@@ -62,6 +62,8 @@ client.on('messageCreate', async (message) => {
       });
     }
   });
+
+  console.log(conversationLog);
 
   // Generate a response
   openai
