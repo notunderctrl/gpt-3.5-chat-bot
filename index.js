@@ -40,7 +40,7 @@ client.on('messageCreate', async (message) => {
       if (msg.author.id == client.user.id) {
         conversationLog.push({
           role: 'assistant',
-          content: `${msg.author.username}: ${msg.content}`,
+          content: msg.content,
           name: msg.author.username
             .replace(/\s+/g, '_')
             .replace(/[^\w\s]/gi, ''),
@@ -50,7 +50,7 @@ client.on('messageCreate', async (message) => {
       if (msg.author.id == message.author.id) {
         conversationLog.push({
           role: 'user',
-          content: `${msg.author.username}: ${msg.content}`,
+          content: msg.content,
           name: message.author.username
             .replace(/\s+/g, '_')
             .replace(/[^\w\s]/gi, ''),
