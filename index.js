@@ -63,8 +63,6 @@ client.on('messageCreate', async (message) => {
     }
   });
 
-  console.log(conversationLog);
-
   // Generate a response
   openai
     .createChatCompletion({
