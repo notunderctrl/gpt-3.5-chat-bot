@@ -1,4 +1,3 @@
-
 require('dotenv/config');
 const { Client, IntentsBitField } = require('discord.js');
 const { Configuration, OpenAIApi } = require('openai');
@@ -36,26 +35,17 @@ client.on('messageCreate', async (message) => {
     
     prevMessages.forEach((msg) => {
       if (msg.content.startsWith('!')) return;
-      if (msg.author.id !== client.user.id && message.author.bot) return;
-      if (msg.author.id == client.user.id) {
-        conversationLog.push({
-          role: 'assistant',
-          content: msg.content,
-          name: msg.author.username
-            .replace(/\s+/g, '_')
-            .replace(/[^\w\s]/gi, ''),
-        });
-      }
 
-      if (msg.author.id == message.author.id) {
-        conversationLog.push({
-          role: 'user',
-          content: msg.content,
-          name: message.author.username
-            .replace(/\s+/g, '_')
-            .replace(/[^\w\s]/gi, ''),
-        });
-      }
+      const role = msg.author.id === client.user.id ? 'assistant' : 'user';
+      const name = msg.author.username
+        .replace(/\s+/g, '_')
+        .replace(/[^\w\s]/gi, '');
+
+      conversationLog.push({
+        role: role,
+        content: msg.content,
+        name: name,
+      });
     });
 
     const result = await openai
@@ -63,7 +53,7 @@ client.on('messageCreate', async (message) => {
         model: 'gpt-3.5-turbo',
         messages: conversationLog,
         // max_tokens: 256, // limit token usage
-      })
+    })
       .catch((error) => {
         console.log(`OPENAI ERR: ${error}`);
       });
