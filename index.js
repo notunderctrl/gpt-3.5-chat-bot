@@ -35,7 +35,7 @@ client.on('messageCreate', async (message) => {
     prevMessages.reverse();
     
     prevMessages.forEach((msg) => {
-      if (message.content.startsWith('!')) return;
+      if (msg.content.startsWith('!')) return;
       if (msg.author.id !== client.user.id && message.author.bot) return;
       if (msg.author.id == client.user.id) {
         conversationLog.push({
