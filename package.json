@@ -8,7 +8,7 @@
     "start": "node index.js"
   },
   "keywords": [],
-  "author": "notunderctrl & nanduwastaken",
+  "author": "",
   "license": "ISC",
   "dependencies": {
     "discord.js": "^14.7.1",
