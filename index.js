@@ -1,7 +1,8 @@
-
 require('dotenv/config');
+
 const { Client, IntentsBitField } = require('discord.js');
-const { Configuration, OpenAIApi } = require('openai');
+const OpenAI  = require('openai');
+
 const client = new Client({
   intents: [
     IntentsBitField.Flags.Guilds,
@@ -14,11 +15,9 @@ client.on('ready', () => {
   console.log('The bot is online!');
 });
 
-const configuration = new Configuration({
+const openai = new OpenAI({
   apiKey: process.env.API_KEY,
 });
-
-const openai = new OpenAIApi(configuration);
 
 client.on('messageCreate', async (message) => {
   if (message.author.bot) return;
